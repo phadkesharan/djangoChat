@@ -30,13 +30,10 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Rooms</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            More
+                            Rooms
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">More Apps</a></li>
@@ -46,6 +43,9 @@
                             <li><a class="dropdown-item" href="#">Contact Us</a></li>
                             <li><a class="dropdown-item" href="#">About Us</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Signed In As : {{username}}</a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -101,14 +101,14 @@
                                                     <h5 class="card-title">${response.messages[key].user}</h5>
                                                     <p class="card-text">${response.messages[key].value}</p>
                                                 </div>`
-                            $("#display").append(temp);
+                            $("#display").prepend(temp);
                         }
                     },
                     error: function (response) {
                         alert('An error occured')
                     }
                 });
-            }, 1000);
+            }, 400);
         })
     </script>
 

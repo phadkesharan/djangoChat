@@ -2,8 +2,14 @@
 
 ## Description
 A Simple ChatApp using Django
+
+
 Can be connected to the local network along multiple devices
+
+
 Seperate Chat Groups for Group Communication
+
+
 
 ## How to use
 

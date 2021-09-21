@@ -43,7 +43,7 @@ use virtualEnv or conda
 
 Make Sure the devices are connected to common Wifi or LAN Network
 
-Open cmd an run
+Open cmd and run
 
     ipconfig
 

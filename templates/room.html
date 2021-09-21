@@ -10,7 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
     <title>DjangoChat-{{room}}</title>
 </head>
@@ -55,28 +56,64 @@
         </div>
     </nav>
 
-    <div class="container my-4">
+    <div class="container">
         <div class="alert alert-success -lg" role="alert">
             <h3>Chat Room : {{room}}</h3>
         </div>
     </div>
 
-
-    <div class="container">
+    <div class="container position-static">
         <form id="post-form">
             {% csrf_token %}
             <div class="mb-3">
-              <input  type="hidden"  name="username" id="username" value="{{username}}">
-              <input  type="hidden"  name ="room_id" id="room_id" value="{{room_details.id}}">
+                <input type="hidden" name="username" id="username" value="{{username}}">
+                <input type="hidden" name="room_id" id="room_id" value="{{room_details.id}}">
 
-              <label for="exampleInputEmail1" class="form-label-lg">Type your message</label>
-              <input type="text" class="form-control my-4" aria-describedby="emailHelp" id="message">
-              <input class="form-control bg-success btn-dark" type="submit" value="Send">
-              <div id="emailHelp" class="form-text my-3">We'll never share your messages with anyone else.</div>
+                <label for="exampleInputEmail1" class="form-label-lg">Type your message</label>
+                <input type="text" class="form-control my-4" aria-describedby="emailHelp" id="message">
+                <input class="form-control bg-success btn-dark" type="submit" value="Send">
+                <div id="emailHelp" class="form-text my-3">We'll never share your messages with anyone else.</div>
 
             </div>
-          </form>
+        </form>
     </div>
+
+    <div class="card my-4 mx-6" id="display">
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            setInterval(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: "/getMessages/{{room}}/",
+                    success: function (response) {
+                        console.log(response);
+                        $("#display").empty();
+                        for (var key in response.messages) {
+                            var temp = `<div class="card-header">
+                                                   Date: ${response.messages[key].date.slice(0, 10)}          
+                                                   Time: ${response.messages[key].date.slice(11, 16)}
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${response.messages[key].user}</h5>
+                                                    <p class="card-text">${response.messages[key].value}</p>
+                                                </div>`
+                            $("#display").append(temp);
+                        }
+                    },
+                    error: function (response) {
+                        alert('An error occured')
+                    }
+                });
+            }, 1000);
+        })
+    </script>
+
+
+    
 
 
 
@@ -88,25 +125,25 @@
 </body>
 
 <script type="text/javascript">
-    $(document).on('submit','#post-form',function(e){
-      e.preventDefault();
-  
-      $.ajax({
-        type:'POST',
-        url:'/send',
-        data:{
-            username:$('#username').val(),
-            room_id:$('#room_id').val(),
-            message:$('#message').val(),
-          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-        },
-        success: function(data){
-           console.log(data);
-           alert(data);
-        }
-      });
-      document.getElementById('message').value = ''
+    $(document).on('submit', '#post-form', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: '/send',
+            data: {
+                username: $('#username').val(),
+                room_id: $('#room_id').val(),
+                message: $('#message').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (data) {
+                //    console.log(data);
+                //    alert(data);
+            }
+        });
+        document.getElementById('message').value = ''
     });
-  </script>
+</script>
 
 </html>
